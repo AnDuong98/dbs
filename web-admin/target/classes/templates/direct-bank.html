@@ -1,0 +1,216 @@
+<!--HUUPD-->
+<!DOCTYPE html>
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Product Management Page</title>
+    <th:block layout:fragment="headerfiles">
+        <!-- Toastr -->
+        <link rel="stylesheet" th:href="@{/LTE/plugins/toastr/toastr.min.css}"/>
+
+    </th:block>
+    <link rel="stylesheet" th:href="@{/static/css/bank.css}"/>
+</head>
+<body>
+
+<!-- Content Wrapper. Contains page content -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Danh mục ngân hàng nhận trực tiếp</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Danh mục ngân hàng</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Main row -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <!--                            <a th:href="@{/directBanks/create}" class="btn btn-primary"> Thêm <i-->
+                            <!--                                    class="fas fa-plus ml-2">  </i>-->
+                            <!--                            </a>-->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#createbank">
+                                Thêm <i
+                                    class="fas fa-plus ml-2"> </i>
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#editbank">
+                                Sửa <i
+                                    class="fas fa-edit ml-2"> </i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-xs btn-block btn-warning" data-toggle="modal"
+                                    data-target="#modal-warning"
+                                    style="width: 100px; text-transform: uppercase; float: left; margin-left: 15px;"
+                                    th:styleappend="${errors == null} ? 'display: none;' : 'display:block;'">
+                                <i class="fas fa-bell"></i>&nbsp;&nbsp;Error Found
+                            </button>
+                            <!-- Start search-->
+                            <div class="card-tools">
+                                <form method="POST" th:action="@{/products}">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" id="searchValue"
+                                               th:value="*{searchValue}" class="form-control float-right"
+                                               placeholder="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!--End search-->
+                            </div>
+                        </div>
+
+                        <!--  add data-->
+                        <div class="modal fade" id="createbank" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle1">Thêm ngân hàng gửi</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="#">
+                                        <div class="modal-body">
+                                            <div class="poup">
+                                                <label>Ngân hàng
+                                                    <select name="Ngân hàng BIDV" id="">
+                                                        <option value="">Ngân hàng BIDV</option>
+                                                        <option value="">Ngân hàng huupd</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="">
+                                                <label class="switch">Trạng thái
+                                                    <input type="checkbox" checked>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Lưu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--edit data-->
+                        <div class="modal fade" id="editbank" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle2">Cập nhật ngân hàng gửi</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="#">
+                                        <div class="modal-body">
+                                            <div class="poup">
+                                                <label>Ngân hàng</label>
+                                                <input type="text" class="form-control" value="Ngân hàng BIDV"
+                                                       readonly/>
+
+                                            </div>
+                                            <div class="">
+                                                <label class="switch">Trạng thái
+                                                    <input type="checkbox" checked>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Lưu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--Show data -->
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover table-striped"
+                                   style="text-align: center">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã Ngân Hàng</th>
+                                    <th>Tên Ngân Hàng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Người cập nhật</th>
+                                    <th>Ngày cập nhật</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>BIDV</td>
+                                    <td>Ngân hàng đầu tư và phát triển Việt Nam</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td>huupd</td>
+                                    <td>20/04/2020</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã Ngân Hàng</th>
+                                    <th>Tên Ngân Hàng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Người cập nhật</th>
+                                    <th>Ngày cập nhật</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row (main row) -->
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>
